@@ -4,5 +4,10 @@ http://www.codeisbug.com/  网址
 
 
 t4下面会针对数据库进行生产Model
+这是三个连接数据的都是OK的
+SqlTemplate
+OracleTemplate
+MysqlTemplate
 
-Program：会有不同的数据库代码进行生产
+
+Program：会有不同的数据库代码进行生产  
