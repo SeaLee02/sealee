@@ -1,0 +1,43 @@
+﻿CommonExtensions类：是方法扩展类（这个一般都是根据具体情况自行扩展，写法百度C#扩展方法）
+----------------------------------------------------------------------
+
+HttpHelper类:是Get，Post请求封装类       GetHttp(url).GetAwaiter().GetResult();这中是等待执行结果(await一样)  GetHttp();不等待结果
+----------------------------------------------------------------------
+
+Qurl:参数拼接（使用&符号，参数名=参数值&参数名2=参数值2）
+例如
+RealtimeValuesLSInDto inDto = new RealtimeValuesLSInDto();
+inDto.tenantId = "829d30d1a96f486cb3bad7544d451b41";
+inDto.monitorTypeCode = "MT_CHQ";
+inDto.startDatetime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") + " 23:50:00";
+inDto.endDatetime = DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:00";
+apiUrl = "";
+string url = $"{apiUrl}{Qurl.GetUrlQ(inDto)}";
+----------------------------------------------------------------------
+
+ValidatetionHelper：实体验证
+例如:
+public class GetStaffCountByShiftInDto
+{
+    /// <summary>
+    /// 租户Id
+    /// </summary>
+    [Required(ErrorMessage = "门店ID不能为空")]   
+    public string tenantId { get; set; }
+    /// <summary>
+    /// 部门id
+    /// </summary>
+    public string deptId { get; set; }
+}
+
+
+var result = ValidatetionHelper.IsValid(inDto);
+if (!result.IsVaild)
+{
+foreach (ErrorMember errorMember in result.ErrorMembers)
+{
+Log.WriteLog(this.GetType().ToString(), "GetStaffCountByShift", errorMember.ErrorMemberName + "：" + errorMember.ErrorMessage);
+}
+}
+----------------------------------------------------------------------
+

@@ -1,0 +1,64 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(SolutionDir)\Sealee.Util\bin\Debug\Sealee.Util.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ assembly name="System.Data" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SqlSugar" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Web" #>
+<#@ import namespace="Sealee.Util" #>
+<#@ assembly name="$(SolutionDir)\SqlSugarDemo\bin\Debug\Newtonsoft.Json.dll" #>
+<#@ assembly name="$(SolutionDir)\SqlSugarDemo\bin\Debug\SqlSugar.dll" #>
+<# 
+     
+	//CTRL+S将会执行该文件的代码，自动作生实体
+
+    //当前项目目录
+    string projectDir = Host.ResolveAssemblyReference("$(ProjectDir)");
+
+	//解决方案目录
+    string solutionDir = Host.ResolveAssemblyReference("$(SolutionDir)");
+
+	 var db = new SqlSugarClient(new ConnectionConfig() { 
+                ConnectionString =  @"server=PV-X00273458\SQLEXPRESS;uid=sa;pwd=123;database=SchoolDB",
+                DbType = DbType.SqlServer, 
+                IsAutoCloseConnection = true,
+                  InitKeyType = InitKeyType.Attribute});
+
+
+          List<DbTableInfo> list = db.DbMaintenance.GetTableInfoList();
+                    List<DbTableInfo> viewList = db.DbMaintenance.GetViewInfoList();
+                    //表
+                    foreach (DbTableInfo table in list)
+                    {
+                        string table_name = table.Name.ToCase();
+                        db.MappingTables.Add(table_name, table.Name);
+                        List<DbColumnInfo> dd = db.DbMaintenance.GetColumnInfosByTableName(table.Name);
+                        foreach (DbColumnInfo item in dd)
+                        {
+                            db.MappingColumns.Add(item.DbColumnName.ToCase(), item.DbColumnName, table_name);
+                        }
+          db.DbFirst.IsCreateAttribute().Where(table.Name).CreateClassFile(projectDir+"\\Model2","Modle");
+             }
+                    //视图
+                    foreach (DbTableInfo table in viewList)
+                    {
+                        string table_name = table.Name.ToCase();
+                        db.MappingTables.Add(table_name, table.Name);
+                        List<DbColumnInfo> dd = db.DbMaintenance.GetColumnInfosByTableName(table.Name);
+                        foreach (DbColumnInfo item in dd)
+                        {
+                            db.MappingColumns.Add(item.DbColumnName.ToCase(), item.DbColumnName, table_name);        
+                        }
+            db.DbFirst.IsCreateAttribute().Where(table.Name).CreateClassFile(projectDir+"\\Model2","Modle");
+             }
+      //db.DbFirst.IsCreateAttribute().CreateClassFile(projectDir+"\\Model","Modle");
+
+     
+#>

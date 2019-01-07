@@ -1,0 +1,8 @@
+﻿SqlSugar是ORM轻量级框架，能够连接Oracle,Mysql,SQLServer,SQlite
+有.NET 4.+ & .NET CORE  两个版本
+http://www.codeisbug.com/  网址
+
+
+t4下面会针对数据库进行生产Model
+
+Program：会有不同的数据库代码进行生产
