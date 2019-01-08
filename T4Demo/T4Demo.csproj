@@ -81,9 +81,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TextTemplate1.tt</DependentUpon>
     </Content>
+    <Content Include="SQLT4.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sealee.Util\Sealee.Util.csproj">
+      <Project>{300da3ff-8dbf-4ed9-9c75-e148a9dae037}</Project>
+      <Name>Sealee.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
