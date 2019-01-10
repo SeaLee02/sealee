@@ -1,0 +1,44 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(projectDir)sqlsugardll\Sealee.Util.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SqlSugar" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Sealee.Util" #>
+<#@ include file="T4Toolbox.tt" #>
+<#@ assembly name="$(SolutionDir)\SqlSugarDemo\bin\Debug\SqlSugar.dll" #>
+<#@ include file="$(ProjectDir)T4Tool/SqlTemplate.tt" #>
+<# 
+     
+    //CTRL+S将会执行该文件的代码，自动作生实体
+
+    //当前项目目录
+    string projectDir = Host.ResolveAssemblyReference("$(ProjectDir)");
+
+    //解决方案目录
+    string solutionDir = Host.ResolveAssemblyReference("$(SolutionDir)");
+
+    var db = new SqlSugarClient(new ConnectionConfig() { 
+            ConnectionString =  @"server=PV-X00273458\SQLEXPRESS;uid=sa;pwd=123;database=SchoolDB",
+            DbType = DbType.SqlServer, 
+            IsAutoCloseConnection = true,
+            InitKeyType = InitKeyType.Attribute});
+
+
+    List<DbTableInfo> list = db.DbMaintenance.GetTableInfoList();
+    List<DbTableInfo> viewList = db.DbMaintenance.GetViewInfoList();
+     string curPath = Path.GetDirectoryName(Host.TemplateFile);
+    string destPath = Path.Combine(curPath, "Model");
+    foreach(DbTableInfo tableInfo in list)
+    {
+        string fileName = string.Format(@"{0}\{1}.cs", destPath, tableInfo.Name.ToCase());
+        SqlTemplate template = new SqlTemplate(tableInfo,db);
+        template.Output.Encoding = Encoding.UTF8;
+        template.Output.PreserveExistingFile =false;
+        template.RenderToFile(fileName);
+    }     
+#>

@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +48,19 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="T4Tool\Model\Course.cs" />
+    <Compile Include="T4Tool\Model\My_Test1.cs" />
+    <Compile Include="T4Tool\Model\My_Test2.cs" />
+    <Compile Include="T4Tool\Model\Standard.cs" />
+    <Compile Include="T4Tool\Model\Student.cs" />
+    <Compile Include="T4Tool\Model\StudentAddress.cs" />
+    <Compile Include="T4Tool\Model\Teacher.cs" />
+    <Compile Include="T4Tool\Model\TestDemo.cs" />
+    <Compile Include="T4Tool\MyTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MyTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="T4\TextTemplate1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -82,9 +96,28 @@
       <DependentUpon>TextTemplate1.tt</DependentUpon>
     </Content>
     <Content Include="SQLT4.sql" />
+    <None Include="T4Tool\CodeTemplate.ttinclude" />
+    <Content Include="T4Tool\MyTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MyTest.cs</LastGenOutput>
+      <LastOutputs>
+.\Model\Course.cs
+.\Model\E_tEST_sTIU.cs
+.\Model\My_Test1.cs
+.\Model\My_Test2.cs
+.\Model\Standard.cs
+.\Model\Student.cs
+.\Model\StudentAddress.cs
+.\Model\Teacher.cs
+.\Model\TestDemo.cs
+.\MyTest.cs
+</LastOutputs>
+    </Content>
+    <Content Include="T4Tool\Template1.tt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
+    <Folder Include="File\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sealee.Util\Sealee.Util.csproj">

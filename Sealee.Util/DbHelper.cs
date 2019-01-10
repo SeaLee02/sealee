@@ -24,7 +24,7 @@ namespace Sealee.Util
                 else
                 {
                     tables = string.Format(" and obj.name in ('{0}')", tables.Replace(",", "','"));
-                }               
+                }
             }
             #region SQL
             string sql = string.Format(@"SELECT
@@ -50,7 +50,8 @@ namespace Sealee.Util
                 TableName = row.Field<string>("tablename"),
                 SchemaName = row.Field<string>("schemname"),
                 Rows = row.Field<int>("rows"),
-                HasPrimaryKey = row.Field<bool>("HasPrimaryKey")
+                HasPrimaryKey = row.Field<bool>("HasPrimaryKey"),
+                DbColumns = GetDbColumns(connectionString, database, row.Field<string>("tablename"))
             }).ToList();
         }
         #endregion
@@ -161,6 +162,12 @@ namespace Sealee.Util
         /// 是否含有主键
         /// </summary>
         public bool HasPrimaryKey { get; set; }
+
+        public List<DbColumn> DbColumns
+        {
+            get;
+            set;
+        }
     }
     #endregion
 

@@ -78,6 +78,20 @@
     <Compile Include="Model\ViewCourse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="T4Tool\Model\Course.cs" />
+    <Compile Include="T4Tool\Model\ETestStiu.cs" />
+    <Compile Include="T4Tool\Model\MyTest1.cs" />
+    <Compile Include="T4Tool\Model\MyTest2.cs" />
+    <Compile Include="T4Tool\Model\Standard.cs" />
+    <Compile Include="T4Tool\Model\Student.cs" />
+    <Compile Include="T4Tool\Model\Studentaddress.cs" />
+    <Compile Include="T4Tool\Model\Teacher.cs" />
+    <Compile Include="T4Tool\Model\Testdemo.cs" />
+    <Compile Include="T4Tool\SqlTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SqlTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="T4\MysqlTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -108,7 +122,25 @@
   <ItemGroup>
     <Content Include="bin\Debug\SqlSugarDemo.exe" />
     <Content Include="bin\Debug\SqlSugarDemo.pdb" />
+    <Content Include="sqlsugardll\Sealee.Util.dll" />
     <Content Include="sqlsugardll\SqlSugar.dll" />
+    <Content Include="T4Tool\SqlTemplate.tt" />
+    <Content Include="T4Tool\SqlTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SqlTest.cs</LastGenOutput>
+      <LastOutputs>
+.\Model\Course.cs
+.\Model\ETestStiu.cs
+.\Model\MyTest1.cs
+.\Model\MyTest2.cs
+.\Model\Standard.cs
+.\Model\Student.cs
+.\Model\Studentaddress.cs
+.\Model\Teacher.cs
+.\Model\Testdemo.cs
+.\SqlTest.cs
+</LastOutputs>
+    </Content>
     <Content Include="T4\MysqlTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MysqlTemplate.cs</LastGenOutput>

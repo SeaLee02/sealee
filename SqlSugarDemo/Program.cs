@@ -21,14 +21,14 @@ namespace SqlSugarDemo
             //model.Standardname = "性能";
             //dbContext.Standards.Insert(model);
 
-            var dd123 = dbContext.Testdemos.GetList();
+            //var dd123 = dbContext.Testdemos.GetList();
 
-            Testdemo testdemo = new Testdemo();
-            testdemo.Name = "记得记得就";
-            testdemo.Testenums = TestEnum.Sealee;
-            dbContext.Testdemos.Insert(testdemo);
+            //Testdemo testdemo = new Testdemo();
+            //testdemo.Name = "记得记得就";
+            //testdemo.Testenums = TestEnum.Sealee;
+            //dbContext.Testdemos.Insert(testdemo);
 
-            int i = 5;
+            int i = 4;
             if (i == 4)
             {
                 using (SqlSugarClient db = new SqlSugarClient(new ConnectionConfig()
@@ -43,15 +43,16 @@ namespace SqlSugarDemo
                     List<DbTableInfo> viewList = db.DbMaintenance.GetViewInfoList();
                     //表
                     foreach (DbTableInfo table in list)
-                    {
+                    {                   
                         string table_name = table.Name.ToCase();
                         db.MappingTables.Add(table_name, table.Name);
                         List<DbColumnInfo> dd = db.DbMaintenance.GetColumnInfosByTableName(table.Name);
                         foreach (DbColumnInfo item in dd)
                         {
+                            
                             db.MappingColumns.Add(item.DbColumnName.ToCase(), item.DbColumnName, table_name);
                         }
-                        db.DbFirst.IsCreateAttribute().Where(table.Name).CreateClassFile("E:\\Code\\sealee\\SqlSugar\\Model3", "Modle2");
+                        //db.DbFirst.IsCreateAttribute().Where(table.Name).CreateClassFile("E:\\Code\\sealee\\SqlSugar\\Model3", "Modle2");
                     }
                     //视图
                     foreach (DbTableInfo table in viewList)
@@ -64,7 +65,7 @@ namespace SqlSugarDemo
                             db.MappingColumns.Add(item.DbColumnName.ToCase(), item.DbColumnName, table_name);
 
                         }
-                        db.DbFirst.IsCreateAttribute().Where(table.Name).CreateClassFile("E:\\Code\\sealee\\SqlSugar\\Model3", "Modle2");
+                        //db.DbFirst.IsCreateAttribute().Where(table.Name).CreateClassFile("E:\\Code\\sealee\\SqlSugar\\Model3", "Modle2");
                     }
                 }
 

@@ -1,0 +1,43 @@
+﻿<#+
+    // <copyright file="CodeTemplate.tt" company="李海@中国">
+    //  Copyright © 李海@中国. All Rights Reserved.
+    // </copyright>
+
+    public class CodeTemplate : CSharpTemplate
+    {
+ 
+        private DbTable _model;
+        public CodeTemplate(DbTable model)
+        {
+            _model = model;
+        }
+
+
+        public override string TransformText()
+        {
+#>
+namespace <#= DefaultNamespace #>
+{
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
+    [Table("<#= _model.TableName #>")]
+	public class <#= _model.TableName #>
+	{
+<#+ foreach(DbColumn column in _model.DbColumns){ #>
+         /// <summary>
+        /// <#= column.Remark #>
+        /// </summary>
+        [Display(Name ="<#= column.Remark #>",Description ="<#= column.Remark #>")]
+        [Column("<#= column.ColumnName #>")]
+        public <#= column.CSharpType #> <#= column.ColumnName #>{ get; set; }		
+
+<#+ } #>
+    }
+}
+<#+
+            return this.GenerationEnvironment.ToString();
+        }
+    }
+#>
