@@ -220,5 +220,120 @@ namespace Sealee.Util
             }
             return str;
         }
+
+        #region    时间
+
+        /// <summary>
+        /// 字符转时间
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <returns></returns>
+        public static DateTime ConvertStringToDateTime(this long timeStamp)
+        {
+            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            long lTime = long.Parse(timeStamp + "0000");
+            TimeSpan toNow = new TimeSpan(lTime);
+            return dtStart.Add(toNow);
+        }
+
+        /// <summary>
+        /// 时间转时间戳（精确到毫秒）
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static long ToUnixFromDate(this DateTime value)
+        {
+            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1)); // 当地时区
+            long timeStamp = (long)(value - startTime).TotalMilliseconds; // 相差毫秒
+            return timeStamp;
+        }
+
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime ToStartTime(this DateTime value)
+        {
+            DateTime dt = DateTime.Now;
+            DateTime.TryParse(value.ToString("yyyy-MM-dd") + " 00:00:00", out dt);
+            return dt;
+        }
+
+
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime ToEndTime(this DateTime value)
+        {
+            DateTime dt = DateTime.Now;
+            DateTime.TryParse(value.ToString("yyyy-MM-dd") + " 23:59:59", out dt);
+            return dt;
+        }
+
+        /// <summary>
+        /// 根据当前时间获取这一周的数据
+        /// </summary>
+        /// <param name="now"></param>
+        /// <returns></returns>
+        public static List<DateTime> GetWeek(this DateTime now)
+        {
+            List<DateTime> dtList = new List<DateTime>();
+            DateTime someDay = now;
+            int wd = (int)someDay.DayOfWeek;
+            for (int j = 1 - wd; j < 8 - wd; j++)
+            {
+                dtList.Add(someDay.AddDays(j));
+            }
+            return dtList;
+        }
+
+        /// <summary>
+        /// 获取4季数据
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static List<List<DateTime>> GetQuarter(this DateTime dt)
+        {
+            List<List<DateTime>> result = new List<List<DateTime>>();
+
+            DateTime Start1 = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);  //本季度初
+            DateTime End1 = Start1.AddMonths(3).AddDays(-1).AddHours(23).AddMinutes(59).AddSeconds(59);  //本季度末
+            List<DateTime> times1 = new List<DateTime>();
+            times1.Add(Start1);
+            times1.Add(End1);
+            result.Add(times1);
+
+            dt = dt.AddMonths(3);  //本季度末
+            DateTime Start2 = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);  //本季度初
+            DateTime End2 = Start2.AddMonths(3).AddHours(23).AddMinutes(59).AddSeconds(59);  //本季度末
+            List<DateTime> times2 = new List<DateTime>();
+            times2.Add(Start2);
+            times2.Add(End2);
+            result.Add(times2);
+
+            dt = dt.AddMonths(3);  //本季度末
+            DateTime Start3 = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);  //本季度初
+            DateTime End3 = Start3.AddMonths(3).AddHours(23).AddMinutes(59).AddSeconds(59); //本季度末
+            List<DateTime> times3 = new List<DateTime>();
+            times3.Add(Start3);
+            times3.Add(End3);
+            result.Add(times3);
+
+
+            dt = dt.AddMonths(3);  //本季度末
+            DateTime Start4 = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);  //本季度初
+            DateTime End4 = Start4.AddMonths(3).AddHours(23).AddMinutes(59).AddSeconds(59); //本季度末
+            List<DateTime> times4 = new List<DateTime>();
+            times4.Add(Start4);
+            times4.Add(End4);
+            result.Add(times4);
+
+            return result;
+        }
+        #endregion
+
     }
 }
