@@ -1,0 +1,61 @@
+﻿<#+
+    // <copyright file="ViewTemplate.t4" company="sealee@中国">
+    //  Copyright © sealee. All Rights Reserved.
+    // </copyright>
+
+    public class ViewTemplate : CSharpTemplate
+    {
+        private DbView _model;
+        public ViewTemplate(DbView model)
+        {
+            _model=model;
+        }
+  
+        private string GetIsNull(DbColumn column)
+        {
+            if(column.CommonType.IsValueType && column.IsNullable){
+                return "?";
+            }else{
+                return "";
+            }
+        }
+
+
+
+        public override string TransformText()
+        {
+#>
+namespace Test.T4
+{
+    using System;   
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    /// <summary>
+    /// <#=_model.ViewDesc #>
+    /// </summary>
+    [Table("<#= _model.ViewName #>")]
+    public class <#=_model.ViewName #>
+    {
+<#+foreach(DbColumn column in _model.DbColumns){#>
+        /// <summary>
+        /// <#=column.ColumnDesc #>
+        /// </summary>
+        [Display(Description = "<#=column.ColumnDesc #>", Name = "<#=column.ColumnDesc #>")]
+        [Column("<#=column.ColumnName #>")]
+<#+if(column.CShareType=="string"){#>
+        [StringLength(<#=column.CharLength #>)]
+<#+}#>
+        public <#= column.CShareType  #><#= GetIsNull(column) #>  <#= column.ColumnName #> { get; set; }
+
+<#+} #>
+    }
+}
+
+<#+
+            return this.GenerationEnvironment.ToString();
+        }
+    }
+#>
+

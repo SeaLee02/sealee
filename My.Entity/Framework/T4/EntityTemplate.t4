@@ -1,0 +1,74 @@
+﻿<#+
+    // <copyright file="EntityTemplate.t4" company="sealee@中国">
+    //  Copyright © sealee. All Rights Reserved.
+    // </copyright>
+
+    public class EntityTemplate : CSharpTemplate
+    {
+        private DbTable _model;
+        public EntityTemplate(DbTable model)
+        {
+            _model=model;
+        }
+  
+        private string GetIsNull(DbColumn column)
+        {
+            if(column.CommonType.IsValueType && column.IsNullable){
+                return "?";
+            }else{
+                return "";
+            }
+        }
+
+
+
+        public override string TransformText()
+        {
+#>
+namespace Test.T4
+{
+    using System;
+    using System.ComponentModel;   
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    /// <summary>
+    /// <#=_model.TableDesc #>
+    /// </summary>
+    [Table("<#= _model.TableName #>")]
+    public class <#=_model.TableName #>
+    {
+
+        /// <summary>
+        /// 主键
+        /// </summary>
+        [Column("<#=_model.TablePrimarkeyName #>")]
+        [Display(Name = "<#=_model.TableDesc #>主键", Description = "<#=_model.TableDesc #>主键")]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public <#=_model.TablePrimarkeyType #> Id { get; set; }
+
+<#+foreach(DbColumn column in _model.DbColumns.Where(x=>x.ColumnName!=_model.TablePrimarkeyName)){#>
+        /// <summary>
+        /// <#=column.ColumnDesc #>
+        /// </summary>
+        [Display(Description = "<#=column.ColumnDesc #>", Name = "<#=column.ColumnDesc #>")]
+        [Column("<#=column.ColumnName #>")]
+<#+if(column.CShareType=="string"){#>
+        [StringLength(<#=column.CharLength #>)]
+<#+}#>
+        public <#= column.CShareType  #><#= GetIsNull(column) #>  <#= column.ColumnName #> { get; set; }
+
+<#+} #>
+    }
+
+<#+ foreach(string enumStr in _model.ListEnumStr){#>
+
+<#= enumStr #>
+<#+} #>
+}
+
+<#+
+            return this.GenerationEnvironment.ToString();
+        }
+    }
+#>

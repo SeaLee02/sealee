@@ -1,0 +1,25 @@
+﻿<#+
+// <copyright file="Procedure.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class Procedure : CSharpTemplate
+{
+	public override string TransformText()
+	{
+		base.TransformText();
+#>
+namespace <#= DefaultNamespace #>
+{
+	public class <#= Identifier("Sample Class") #>
+	{
+		private string <#= FieldName("Sample Field") #>;
+
+		public string <#= PropertyName("Sample Property") #> { get; set; }
+	}
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

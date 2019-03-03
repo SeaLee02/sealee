@@ -1,0 +1,30 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(projectDir)DLL\Sealee.T4Helper.dll" #>
+<#@ import namespace="Sealee.T4Helper" #>
+<#@ include file="T4Toolbox.tt" #>
+<#@ include file="$(ProjectDir)Framework/T4/EntityTemplate.t4" #>
+
+
+<# 
+     // 配置config
+    string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
+    string connectionStrng = @"server=PV-X00273458\SQLEXPRESS;uid=sa;pwd=123;database=SchoolDB";
+    List<DbTable> tableInfos=DbUtil.GetDbTables(connectionStrng, "").Where(x=>x.HasPrimaryKey==true).ToList();;
+    string curPath = Path.GetDirectoryName(Host.TemplateFile);
+    string destPath = Path.Combine(curPath, "");
+
+    foreach(DbTable tableInfo in tableInfos)
+    {
+        string fileName = string.Format(@"{0}\{1}.cs", destPath, tableInfo.TableName);
+        EntityTemplate template = new EntityTemplate(tableInfo);
+        template.Output.Encoding = Encoding.UTF8;
+        template.Output.PreserveExistingFile =false;
+        template.RenderToFile(fileName);
+    }
+#>
+
