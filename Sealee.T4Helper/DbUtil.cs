@@ -405,13 +405,13 @@
                                 LEFT JOIN[sys].[extended_properties] se
                                    ON obj.object_id = se.major_id
                                       AND se.minor_id = 0
-                            WHERE obj.type = {xtype}  {objName} ";
+                            WHERE obj.type ='{xtype}'  {objName} ";
 
             DataTable dataTable = GetDataTable(connectionString, sql);
             List<DbObj> list = dataTable.Rows.Cast<DataRow>().Select(row => new DbObj
             {
                 ObjName = row.Field<string>("ViewName"),
-                ObjDesc = row.Field<string>("ViewDesc") ?? null,
+                ObjDesc = row.Field<string>("ViewDesc") ?? "",
                 DbObjColumns = GetDbObjColumns(connectionString, row.Field<string>("ViewName"))
             }).ToList();
             return list;
@@ -458,7 +458,7 @@
                         LEFT JOIN sys.extended_properties sep
                             ON sep.major_id = sp.object_id --得到是这个表的
                                AND sp.parameter_id = sep.minor_id --这列的
-                    WHERE sp.parameter_id != 0 AND obj.name={objName}
+                    WHERE sp.parameter_id != 0 AND obj.name='{objName}'
                 ";
             DataTable dataTable = GetDataTable(connectionString, sql);
             List<DbObjColumn> list = dataTable.Rows.Cast<DataRow>().Select(row => new DbObjColumn

@@ -134,7 +134,7 @@ namespace Sealee.SqlHelper
         /// <param name="commandText"></param>
         /// <param name="parms"></param>
         /// <returns></returns>
-        public static DataSet GetDataTable(string connectionString, string commandText, Dictionary<string, object> keys = null, params SqlParameter[] parameters)
+        public static DataSet GetDataSet(string connectionString, string commandText, Dictionary<string, object> keys = null, params SqlParameter[] parameters)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
