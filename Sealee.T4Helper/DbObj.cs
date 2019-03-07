@@ -22,5 +22,7 @@
         /// 列信息
         /// </summary>
         public List<DbObjColumn> DbObjColumns { get; set; }
+
+        public List<DbColumn> DbColumns { get; set; }
     }
 }

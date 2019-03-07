@@ -412,7 +412,8 @@
             {
                 ObjName = row.Field<string>("ViewName"),
                 ObjDesc = row.Field<string>("ViewDesc") ?? "",
-                DbObjColumns = GetDbObjColumns(connectionString, row.Field<string>("ViewName"))
+                DbObjColumns = GetDbObjColumns(connectionString, row.Field<string>("ViewName")),
+                DbColumns=GetDbColumns(connectionString,row.Field<string>("ViewName"))
             }).ToList();
             return list;
         }
