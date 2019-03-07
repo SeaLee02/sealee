@@ -59,6 +59,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>_ViewDemo.tt</DependentUpon>
     </Compile>
+    <Compile Include="01Demo\03Pro\TestPro.cs" />
+    <Compile Include="01Demo\03Pro\TestPro2.cs" />
+    <Compile Include="01Demo\03Pro\_ProDemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ProDemo.tt</DependentUpon>
+    </Compile>
     <Compile Include="Framework\03Pro\BasePro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -95,12 +102,12 @@
     </Content>
     <Content Include="01Demo\03Pro\_ProDemo.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>_ProDemo.txt</LastGenOutput>
-    </Content>
-    <Content Include="01Demo\03Pro\_ProDemo.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_ProDemo.tt</DependentUpon>
+      <LastGenOutput>_ProDemo.cs</LastGenOutput>
+      <LastOutputs>
+.\_ProDemo.cs
+.\TestPro.cs
+.\TestPro2.cs
+</LastOutputs>
     </Content>
     <Content Include="01Demo\04Function\01TabelFunction\_TableFunctionDemo.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

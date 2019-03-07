@@ -1,25 +1,72 @@
 ﻿<#+
-// <copyright file="Procedure.tt" company="">
-//  Copyright © . All Rights Reserved.
-// </copyright>
+    // <copyright file="Procedure.tt" company="">
+    //  Copyright © . All Rights Reserved.
+    // </copyright>
 
-public class Procedure : CSharpTemplate
-{
-	public override string TransformText()
-	{
-		base.TransformText();
+    public class Procedure : CSharpTemplate
+    {
+        private DbObj _obj;
+
+        public Procedure(DbObj obj)
+        { 
+            _obj=obj;
+        }
+
+        public override string TransformText()
+        {         
 #>
-namespace <#= DefaultNamespace #>
+namespace Test.T4
 {
-	public class <#= Identifier("Sample Class") #>
-	{
-		private string <#= FieldName("Sample Field") #>;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using My.Entity.Framework._03Pro;
+    
+     /// <summary>
+    /// <#=_obj.ObjDesc #>
+    /// </summary>
+    public class <#=_obj.ObjName #> : BasePro
+    {
+	<#+foreach(DbObjColumn column in _obj.DbObjColumns){#>
+        
+        /// <summary>
+        /// <#=column.ObjColumnDesc#>
+        /// </summary>
+        public <#=column.CShareType#> <#=column.ObjColumnName #> { get; set; } 
+<#+} #>
+                                               
+        public override SqlParameter[] GetSqlParameters()
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+<#+foreach(DbObjColumn column in _obj.DbObjColumns){#>
+<#+if(!column.IsOutPut){ #>
+            parameters.Add(new SqlParameter("<#=column.ObjColumnName #>", this.<#=column.ObjColumnName.Replace("@","")#>));
+<#+}else{ #>
+            var param<#=column.ObjColumnName.Replace("@","") #> = new SqlParameter("<#=column.ObjColumnName #>", SqlDbType.<#=StringUtil.GetUpperF(column.ObjColumnType) #>);
+            param<#=column.ObjColumnName.Replace("@","") #>.Direction = ParameterDirection.Output;
+            parameters.Add(param<#=column.ObjColumnName.Replace("@","") #>);
+<#+} #><#+} #>
+            return parameters.ToArray();
+         }
 
-		public string <#= PropertyName("Sample Property") #> { get; set; }
+        public override string GetSql()
+        {
+            string sql = "EXEC dbo.<#=_obj.ObjName #> ";
+<#+foreach(DbObjColumn column in _obj.DbObjColumns){#>
+<#+if(!column.IsOutPut){ #>
+            sql += " <#=column.ObjColumnName #> =<#=column.ObjColumnName #>,";
+<#+}else{ #>
+            sql += " <#=column.ObjColumnName #> =<#=column.ObjColumnName #> OUT,";
+<#+} #>
+<#+} #>
+            sql = sql.Substring(0, sql.Length - 1);
+            return sql;
+        }
+
 	}
 }
 <#+
-        return this.GenerationEnvironment.ToString();
-	}
-}
+            return this.GenerationEnvironment.ToString();
+        }
+    }
 #>
