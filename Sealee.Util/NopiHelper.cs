@@ -256,7 +256,9 @@ namespace Sealee.Util
                 {
                     if (ColumnNameList.Contains(pro.Name))
                     {
-                        pro.SetValue(d, item[pro.Name], null);//进行数据映射
+                        //类型转化
+                        pro.SetValue(d, Convert.ChangeType(item[pro.Name], pro.PropertyType), null);//进行数据映射
+                     
                     }
                 }
                 result.Add(d);
