@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Sealee.T4Helper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Sealee.T4Helper\bin\Debug\Sealee.T4Helper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -80,6 +84,7 @@
       <DependentUpon>_ScalarFunctionDemo.tt</DependentUpon>
     </Compile>
     <Compile Include="Framework\03Pro\BasePro.cs" />
+    <Compile Include="Framework\_MyConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

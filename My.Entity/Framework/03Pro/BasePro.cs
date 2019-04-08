@@ -4,12 +4,14 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using Sealee.T4Helper;
 
     /// <summary>
     /// 存储过程的父类
     /// </summary>
     public abstract class BasePro
     {
+    
 
         /// <summary>
         /// 获取List集合
