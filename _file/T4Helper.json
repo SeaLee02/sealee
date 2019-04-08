@@ -1,6 +1,6 @@
 ﻿{
   "ConnectionString": "server=PV-X00273458\\SQLEXPRESS;uid=sa;pwd=123;database=SchoolDB",
   "IsOverrideFile": false,
-  "NameSpace": "QK.SchoolSH.Entity.Demo",
+  "NameSpace": "My.Entity.Demo",
   "TableName": "DM_"
 }
