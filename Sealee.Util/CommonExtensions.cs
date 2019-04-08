@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.International.Converters.PinYinConverter;  //nuget
 
 namespace Sealee.Util
@@ -201,66 +203,7 @@ namespace Sealee.Util
                 .ToList();
         }
         #endregion
-
-
-        #region
-
-        public static IEnumerable<T> InRange<T, TValue>(
-                    this IQueryable<T> source,
-                    Expression<Func<T, TValue>> selector,
-                    int blockSize,
-                    IEnumerable<TValue> values)
-        {
-            MethodInfo method = null;
-            foreach (MethodInfo tmp in typeof(Enumerable).GetMethods(
-                    BindingFlags.Public | BindingFlags.Static))
-            {
-                if (tmp.Name == "Contains" && tmp.IsGenericMethodDefinition
-                        && tmp.GetParameters().Length == 2)
-                {
-                    method = tmp.MakeGenericMethod(typeof(TValue));
-                    break;
-                }
-            }
-            if (method == null) throw new InvalidOperationException(
-                   "Unable to locate Contains");
-            foreach (TValue[] block in values.GetBlocks(blockSize))
-            {
-                var row = Expression.Parameter(typeof(T), "row");
-                var member = Expression.Invoke(selector, row);
-                var keys = Expression.Constant(block, typeof(TValue[]));
-                var predicate = Expression.Call(method, keys, member);
-                var lambda = Expression.Lambda<Func<T, bool>>(
-                      predicate, row);
-                foreach (T record in source.Where(lambda))
-                {
-                    yield return record;
-                }
-            }
-        }
-        public static IEnumerable<T[]> GetBlocks<T>(
-                this IEnumerable<T> source, int blockSize)
-        {
-            List<T> list = new List<T>(blockSize);
-            foreach (T item in source)
-            {
-                list.Add(item);
-                if (list.Count == blockSize)
-                {
-                    yield return list.ToArray();
-                    list.Clear();
-                }
-            }
-            if (list.Count > 0)
-            {
-                yield return list.ToArray();
-            }
-        } 
-
-    #endregion
-
-    
-
+                           
         /// <summary>
         /// 字符串处理  (_切分，首字母大写 （.)去除  )
         /// </summary>
@@ -399,6 +342,109 @@ namespace Sealee.Util
         #endregion
 
 
+        #region file操作
+        /// <summary>
+        /// 返回上级目录
+        /// </summary>
+        /// <param name="path">初始目录</param>
+        /// <param name="j">需要返回多少级</param>
+        /// <returns>新目录</returns>
+        public static string GetSlnPath(this string path, int j = 0)
+        {
+            for (int i = 0; i < j; i++)
+            {
+                path = Path.GetDirectoryName(path);
+            }
+            return path;
+        }
+        #endregion
+
+
+
+        #region 映射获取描述
+        /// <summary>
+        /// 获取类的描述
+        /// </summary>
+        /// <param name="t">类型</param>
+        /// <returns></returns>
+        public static string GetDescription(this Type t)
+        {
+            DescriptionAttribute[] attributes =
+                   (DescriptionAttribute[])t.GetCustomAttributes(
+                       typeof(DescriptionAttribute), false);
+            return attributes.Length > 0 ? attributes[0].Description : "";
+
+        }
+
+        /// <summary>
+        /// 根据方法名获取描述
+        /// </summary>
+        /// <param name="method">方法名</param>
+        /// <param name="t">类型</param>
+        /// <param name="types">参数类型</param>
+        /// <returns></returns>      
+        public static string GetDescriptionByMethod(this string method, Type t)
+        {
+
+            System.Reflection.MethodInfo fi = t.GetMethod(method);
+            if (fi != null)
+            {
+                DescriptionAttribute[] attributes =
+                    (DescriptionAttribute[])fi.GetCustomAttributes(
+                        typeof(DescriptionAttribute), false);
+                return attributes.Length > 0 ? attributes[0].Description : "";
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// 根据属性获取描述
+        /// </summary>
+        /// <param name="method">属性名称</param>
+        /// <param name="t">类型</param>
+        /// <returns></returns>
+        public static string GetDescriptionByProperty(this string property, Type t)
+        {
+            System.Reflection.PropertyInfo fi = t.GetProperty(property);
+            if (fi != null)
+            {
+                DescriptionAttribute[] attributes =
+                    (DescriptionAttribute[])fi.GetCustomAttributes(
+                        typeof(DescriptionAttribute), false);
+                return attributes.Length > 0 ? attributes[0].Description : "";
+            }
+            return "";
+        }
+
+
+        #endregion
+
+
+        #region 异步循环
+
+        public static void ForEachAction<T>(this List<T> list, Action<T> func)
+        {
+            foreach (T value in list)
+            {
+                func(value);
+            }
+        }
+
+        /// <summary>
+        /// 使用异步遍历处理数据
+        /// </summary>
+        /// <typeparam name="T">需要遍历的基类</typeparam>
+        /// <param name="list">集合</param>
+        /// <param name="func">Lambda表达式</param>
+        /// <returns></returns>
+        public static async Task ForEachAsync<T>(this List<T> list, Func<T, Task> func)
+        {
+            foreach (T value in list)
+            {
+                await func(value);
+            }
+        }
+        #endregion
 
 
 

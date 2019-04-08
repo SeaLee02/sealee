@@ -254,9 +254,18 @@ namespace Sealee.Util
                 PropertyInfo[] ppList = pp.GetProperties();
                 foreach (PropertyInfo pro in pp.GetProperties())
                 {
-                    if (ColumnNameList.Contains(pro.Name))
+                    if (ColumnNameList.Contains(pro.Name) && item[pro.Name] != null && item[pro.Name] != DBNull.Value)
                     {
-                        pro.SetValue(d, item[pro.Name], null);//进行数据映射
+                        Type type = pro.PropertyType;
+                        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            type = type.GetGenericArguments()[0];
+                        }
+                        object value = Convert.ChangeType(item[pro.Name], type);
+                        pro.SetValue(d, value, null);
+
+                        ////类型转化
+                        //pro.SetValue(d, Convert.ChangeType(item[pro.Name], pro.PropertyType), null);//进行数据映射
                     }
                 }
                 result.Add(d);
@@ -285,6 +294,7 @@ namespace Sealee.Util
         }
 
         #endregion
+
 
     }
 }
