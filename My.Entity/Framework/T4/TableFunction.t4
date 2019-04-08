@@ -1,25 +1,80 @@
 ﻿<#+
-// <copyright file="TableFunction.tt" company="">
-//  Copyright © . All Rights Reserved.
-// </copyright>
+    // <copyright file="TableFunction.tt" company="">
+    //  Copyright © . All Rights Reserved.
+    // </copyright>
 
-public class TableFunction : CSharpTemplate
-{
-	public override string TransformText()
-	{
-		base.TransformText();
+    public class TableFunction : CSharpTemplate
+    {  
+        private DbObj _obj;
+        private MyConfig _config;
+        public TableFunction(DbObj obj,MyConfig config)
+        { 
+            _obj=obj;
+            _config=config;
+        }
+        public override string TransformText()
+        {
 #>
-namespace <#= DefaultNamespace #>
+namespace Test.T4
 {
-	public class <#= Identifier("Sample Class") #>
-	{
-		private string <#= FieldName("Sample Field") #>;
+    using System.Collections.Generic;
+    using System;
+    using Sealee.SqlHelper;
 
-		public string <#= PropertyName("Sample Property") #> { get; set; }
+	/// <summary>
+    /// <#=_obj.ObjDesc #>
+    /// </summary>
+    public class <#=_obj.ObjName #> 
+    {
+<#+foreach(DbObjColumn column in _obj.DbObjColumns){#>
+        
+        /// <summary>
+        /// <#=column.ObjColumnDesc#>
+        /// </summary>
+        public <#=column.CShareType#> <#=column.ObjColumnName #> { get; set; } 
+<#+} #>
+
+         /// <summary>
+        /// 获取List集合
+        /// </summary>
+        /// <returns>list集合</returns>
+        public List<<#=_obj.ObjName#>TableInfo> QueryList()
+        {
+            var conStr ="";
+            string sql = this.GetSql();
+            return DBHelper.QueryList<<#=_obj.ObjName#>TableInfo>(conStr, sql, null);
+        }
+
+        public string GetSql()
+        {
+            string sql = "SELECT dbo.<#=_obj.ObjName #>(";
+<#+foreach(DbObjColumn column in _obj.DbObjColumns){#>
+            sql += $"'{this.<#=column.ObjColumnName #>}',";
+<#+} #>
+            sql = sql.Substring(0, sql.Length - 1);
+            sql+=");";
+            return sql;
+        }
+
+
 	}
+
+    public class  <#=_obj.ObjName #>TableInfo
+    {
+    
+<#+foreach(DbColumn column in _obj.DbColumns){#>
+        
+        /// <summary>
+        /// <#=column.ColumnDesc#>
+        /// </summary>
+        public <#=column.CShareType#> <#=column.ColumnName #> { get; set; } 
+<#+} #>
+
+    }
+
 }
 <#+
-        return this.GenerationEnvironment.ToString();
-	}
-}
+            return this.GenerationEnvironment.ToString();
+        }
+    }
 #>

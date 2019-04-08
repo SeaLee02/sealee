@@ -8,25 +8,25 @@
      /// <summary>
     /// 
     /// </summary>
-    public class TestPro : BasePro
+    public class TestPro3 : BasePro
     {
 	        
         /// <summary>
         /// 
         /// </summary>
-        public int @i { get; set; } 
+        public int @id { get; set; } 
                                                
         public override SqlParameter[] GetSqlParameters()
         {
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@i", this.i));
+            parameters.Add(new SqlParameter("@id", this.id));
             return parameters.ToArray();
          }
 
         public override string GetSql()
         {
-            string sql = "EXEC dbo.TestPro ";
-            sql += " @i =@i,";
+            string sql = "EXEC dbo.TestPro3 ";
+            sql += " @id =@id,";
             sql = sql.Substring(0, sql.Length - 1);
             return sql;
         }

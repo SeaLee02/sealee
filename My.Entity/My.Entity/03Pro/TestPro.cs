@@ -1,4 +1,4 @@
-﻿namespace My.Entity.Demo.Pro
+﻿namespace Test.T4
 {
     using System.Collections.Generic;
     using System.Data;

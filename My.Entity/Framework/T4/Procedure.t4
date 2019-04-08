@@ -6,16 +6,17 @@
     public class Procedure : CSharpTemplate
     {
         private DbObj _obj;
-
-        public Procedure(DbObj obj)
+        private MyConfig _config;
+        public Procedure(DbObj obj,MyConfig config)
         { 
-            _obj=obj;
+            _obj=obj; 
+            _config=config;
         }
 
         public override string TransformText()
         {         
 #>
-namespace Test.T4
+namespace <#=_config.NameSpace #>
 {
     using System.Collections.Generic;
     using System.Data;

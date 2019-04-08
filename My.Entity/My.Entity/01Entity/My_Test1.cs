@@ -1,4 +1,4 @@
-﻿namespace My.Entity.Demo.Entity
+﻿namespace Test.T4
 {
     using System;
     using System.ComponentModel;   
@@ -6,27 +6,27 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
-    /// 测试表2
+    /// 测试表1
     /// </summary>
-    [Table("My_Test2")]
-    public class My_Test2
+    [Table("My_Test1")]
+    public class My_Test1
     {
 
         /// <summary>
         /// 主键
         /// </summary>
-        [Column("ID")]
-        [Display(Name = "测试表2主键", Description = "测试表2主键")]
+        [Column("Id")]
+        [Display(Name = "测试表1主键", Description = "测试表1主键")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
-        /// 描述
+        /// 姓名
         /// </summary>
-        [Display(Description = "描述", Name = "描述")]
-        [Column("Des")]
+        [Display(Description = "姓名", Name = "姓名")]
+        [Column("Name")]
         [StringLength(50)]
-        public string  Des { get; set; }
+        public string  Name { get; set; }
 
     }
 

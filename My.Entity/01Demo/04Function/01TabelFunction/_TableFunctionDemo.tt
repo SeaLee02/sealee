@@ -1,6 +1,33 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ import namespace="System.Collections.Generic" #>
 <#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ output extension=".txt" #>
+<#@ import namespace="System.IO" #>
+<#@ assembly name="$(projectDir)DLL\Sealee.T4Helper.dll" #>
+<#@ import namespace="Sealee.T4Helper" #>
+<#@ include file="T4Toolbox.tt" #>
+<#@ include file="$(ProjectDir)Framework\T4\TableFunction.t4" #>
+<#
+    string curPath = Path.GetDirectoryName(Host.TemplateFile);
+    string destPath = Path.Combine(curPath, "TF");
+    string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
+    MyConfig myConfig=StringUtil.GetConfig (solutionsPath+"_file\\T4Helper.json");
+    myConfig.IsOverrideFile=true;
+    myConfig.TableName="";
+    myConfig.NameSpace="My.Entity.Demo.Function";
+    string connectionStrng = @"server=PV-X00273458\SQLEXPRESS;uid=sa;pwd=123;database=SchoolDB";
+    List<DbObj> tables = DbUtil.GetDbObj(myConfig.ConnectionString,"","TF").ToList();
+    foreach (var item in tables)                                                                           
+    {      
+        string fileName = string.Format(@"{0}\{1}.cs", destPath, item.ObjName);
+        TableFunction template = new TableFunction(item,myConfig);
+        template.Output.Encoding = Encoding.UTF8;
+        template.Output.PreserveExistingFile =false;
+        template.RenderToFile(fileName);
+    }
+
+
+ #>

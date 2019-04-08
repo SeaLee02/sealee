@@ -12,15 +12,18 @@
 <# 
      // 配置config
     string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
-    string connectionStrng = @"server=PV-X00273458\SQLEXPRESS;uid=sa;pwd=123;database=SchoolDB";
-    List<DbObj> tables = DbUtil.GetDbObj(connectionStrng,"").ToList();
+    MyConfig myConfig=StringUtil.GetConfig (solutionsPath+"_file\\T4Helper.json");
+    myConfig.IsOverrideFile=true;
+    myConfig.TableName="";
+    myConfig.NameSpace="My.Entity.Demo.Pro";
+    List<DbObj> tables = DbUtil.GetDbObj(myConfig.ConnectionString,"").ToList();
     string curPath = Path.GetDirectoryName(Host.TemplateFile);
     string destPath = Path.Combine(curPath, "");
 
     foreach(DbObj tableInfo in tables)
     {
         string fileName = string.Format(@"{0}\{1}.cs", destPath, tableInfo.ObjName);
-        Procedure template = new Procedure(tableInfo);
+        Procedure template = new Procedure(tableInfo,myConfig);
         template.Output.Encoding = Encoding.UTF8;
         template.Output.PreserveExistingFile =false;
         template.RenderToFile(fileName);

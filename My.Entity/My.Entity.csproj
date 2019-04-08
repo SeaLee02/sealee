@@ -61,10 +61,23 @@
     </Compile>
     <Compile Include="01Demo\03Pro\TestPro.cs" />
     <Compile Include="01Demo\03Pro\TestPro2.cs" />
+    <Compile Include="01Demo\03Pro\TestPro3.cs" />
     <Compile Include="01Demo\03Pro\_ProDemo.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>_ProDemo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="01Demo\04Function\01TabelFunction\TF\TestTF.cs" />
+    <Compile Include="01Demo\04Function\01TabelFunction\_TableFunctionDemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_TableFunctionDemo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="01Demo\04Function\02ScalarFunction\   SF\TestBZ.cs" />
+    <Compile Include="01Demo\04Function\02ScalarFunction\_ScalarFunctionDemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ScalarFunctionDemo.tt</DependentUpon>
     </Compile>
     <Compile Include="Framework\03Pro\BasePro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,25 +120,24 @@
 .\_ProDemo.cs
 .\TestPro.cs
 .\TestPro2.cs
+.\TestPro3.cs
 </LastOutputs>
     </Content>
     <Content Include="01Demo\04Function\01TabelFunction\_TableFunctionDemo.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>_TableFunctionDemo.txt</LastGenOutput>
-    </Content>
-    <Content Include="01Demo\04Function\01TabelFunction\_TableFunctionDemo.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_TableFunctionDemo.tt</DependentUpon>
+      <LastGenOutput>_TableFunctionDemo.cs</LastGenOutput>
+      <LastOutputs>
+.\_TableFunctionDemo.cs
+.\TF\TestTF.cs
+</LastOutputs>
     </Content>
     <Content Include="01Demo\04Function\02ScalarFunction\_ScalarFunctionDemo.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>_ScalarFunctionDemo.txt</LastGenOutput>
-    </Content>
-    <Content Include="01Demo\04Function\02ScalarFunction\_ScalarFunctionDemo.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_ScalarFunctionDemo.tt</DependentUpon>
+      <LastGenOutput>_ScalarFunctionDemo.cs</LastGenOutput>
+      <LastOutputs>
+.\   SF\TestBZ.cs
+.\_ScalarFunctionDemo.cs
+</LastOutputs>
     </Content>
     <Content Include="DLL\Sealee.T4Helper.dll" />
     <None Include="Framework\T4\ViewTemplate.t4" />
@@ -133,10 +145,15 @@
     <None Include="Framework\T4\Procedure.t4" />
     <None Include="Framework\T4\ScalarFunction.t4" />
     <None Include="Framework\T4\TableFunction.t4" />
-    <None Include="Framework\T4\ViewFunction.t4" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sealee.SqlHelper\Sealee.SqlHelper.csproj">
+      <Project>{C2BB7D6D-1E5F-4FC1-A4BB-B31F6BDCE6D6}</Project>
+      <Name>Sealee.SqlHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

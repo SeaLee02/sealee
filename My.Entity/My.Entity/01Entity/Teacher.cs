@@ -1,4 +1,4 @@
-﻿namespace My.Entity.Demo.Entity
+﻿namespace Test.T4
 {
     using System;
     using System.ComponentModel;   

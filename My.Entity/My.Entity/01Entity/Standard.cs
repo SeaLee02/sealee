@@ -1,4 +1,4 @@
-﻿namespace My.Entity.Demo.Entity
+﻿namespace Test.T4
 {
     using System;
     using System.ComponentModel;   
@@ -8,14 +8,14 @@
     /// <summary>
     /// 
     /// </summary>
-    [Table("Teacher")]
-    public class Teacher
+    [Table("Standard")]
+    public class Standard
     {
 
         /// <summary>
         /// 主键
         /// </summary>
-        [Column("TeacherID")]
+        [Column("StandardId")]
         [Display(Name = "主键", Description = "主键")]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -24,16 +24,17 @@
         /// 
         /// </summary>
         [Display(Description = "", Name = "")]
-        [Column("TeacherName")]
+        [Column("StandardName")]
         [StringLength(50)]
-        public string  TeacherName { get; set; }
+        public string  StandardName { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Display(Description = "", Name = "")]
-        [Column("StandardId")]
-        public int?  StandardId { get; set; }
+        [Column("Description")]
+        [StringLength(50)]
+        public string  Description { get; set; }
 
     }
 

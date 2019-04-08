@@ -1,49 +1,46 @@
-﻿namespace My.Entity.Demo.Entity
+﻿namespace Test.T4
 {
-    using System;
-    using System.ComponentModel;   
+    using System;   
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
     /// 
     /// </summary>
-    [Table("Student")]
-    public class Student
+    [Table("View_Course")]
+    public class View_Course
     {
-
         /// <summary>
-        /// 主键
+        /// 
         /// </summary>
-        [Column("StudentID")]
-        [Display(Name = "主键", Description = "主键")]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Display(Description = "", Name = "")]
+        [Column("CourseId")]
+        public int  CourseId { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Display(Description = "", Name = "")]
-        [Column("FirstName")]
+        [Column("CourseName")]
         [StringLength(50)]
-        public string  FirstName { get; set; }
+        public string  CourseName { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Display(Description = "", Name = "")]
-        [Column("LastName")]
+        [Column("Location")]
         [StringLength(50)]
-        public string  LastName { get; set; }
+        public string  Location { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Display(Description = "", Name = "")]
-        [Column("StandardId")]
-        public int?  StandardId { get; set; }
+        [Column("TeacherId")]
+        public int?  TeacherId { get; set; }
 
     }
-
 }
 

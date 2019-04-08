@@ -7,24 +7,21 @@
 <#@ assembly name="$(projectDir)DLL\Sealee.T4Helper.dll" #>
 <#@ import namespace="Sealee.T4Helper" #>
 <#@ include file="T4Toolbox.tt" #>
-<#@ include file="$(ProjectDir)Framework/T4/EntityTemplate.t4" #>
+<#@ include file="$(ProjectDir)Framework/T4/ViewTemplate.t4" #>
 
 
 <# 
      // 配置config
     string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
-    MyConfig myConfig=StringUtil.GetConfig (solutionsPath+"_file\\T4Helper.json");
-    myConfig.IsOverrideFile=true;
-    myConfig.TableName="";
-    myConfig.NameSpace="My.Entity.Demo.Entity";
-    List<DbTable> tableInfos=DbUtil.GetDbTables(myConfig.ConnectionString, "").Where(x=>x.HasPrimaryKey==true).ToList();;
+    string connectionStrng = @"server=PV-X00273458\SQLEXPRESS;uid=sa;pwd=123;database=SchoolDB";
+    List<DbView> tables = DbUtil.GetDbView(connectionStrng,"").ToList();
     string curPath = Path.GetDirectoryName(Host.TemplateFile);
     string destPath = Path.Combine(curPath, "");
 
-    foreach(DbTable tableInfo in tableInfos)
+    foreach(DbView tableInfo in tables)
     {
-        string fileName = string.Format(@"{0}\{1}.cs", destPath, tableInfo.TableName);
-        EntityTemplate template = new EntityTemplate(tableInfo,myConfig);
+        string fileName = string.Format(@"{0}\{1}.cs", destPath, tableInfo.ViewName);
+        ViewTemplate template = new ViewTemplate(tableInfo);
         template.Output.Encoding = Encoding.UTF8;
         template.Output.PreserveExistingFile =false;
         template.RenderToFile(fileName);

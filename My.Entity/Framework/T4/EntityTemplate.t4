@@ -6,9 +6,11 @@
     public class EntityTemplate : CSharpTemplate
     {
         private DbTable _model;
-        public EntityTemplate(DbTable model)
+        private MyConfig _config;
+        public EntityTemplate(DbTable model,MyConfig config)
         {
             _model=model;
+            _config=config;
         }
   
         private string GetIsNull(DbColumn column)
@@ -25,7 +27,7 @@
         public override string TransformText()
         {
 #>
-namespace Test.T4
+namespace <#=_config.NameSpace #>
 {
     using System;
     using System.ComponentModel;   

@@ -5,17 +5,60 @@
 
 public class ScalarFunction : CSharpTemplate
 {
+    private DbObj _obj;
+    private MyConfig _config;
+    public ScalarFunction(DbObj obj,MyConfig config)
+    { 
+         _obj=obj;
+         _config=config;
+    }
+
 	public override string TransformText()
 	{
-		base.TransformText();
 #>
-namespace <#= DefaultNamespace #>
+namespace <#=_config.NameSpace #>
 {
-	public class <#= Identifier("Sample Class") #>
-	{
-		private string <#= FieldName("Sample Field") #>;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using Sealee.SqlHelper;
 
-		public string <#= PropertyName("Sample Property") #> { get; set; }
+	/// <summary>
+    /// <#=_obj.ObjDesc #>
+    /// </summary>
+    public class <#=_obj.ObjName #> 
+    {
+<#+foreach(DbObjColumn column in _obj.DbObjColumns){#>
+        
+        /// <summary>
+        /// <#=column.ObjColumnDesc#>
+        /// </summary>
+        public <#=column.CShareType#> <#=column.ObjColumnName #> { get; set; } 
+<#+} #>
+
+         /// <summary>
+        /// 获取单个值
+        /// </summary>
+        /// <typeparam name="T">值得类型</typeparam>
+        /// <returns>单个值</returns>
+        public T ExecuteScalar<T>()
+        {
+            var conStr = "";
+            string sql = this.GetSql();
+            return DBHelper.ExecuteScalar<T>(conStr, sql, null);
+        }
+
+        public string GetSql()
+        {
+            string sql = "SELECT dbo.<#=_obj.ObjName #>(";
+<#+foreach(DbObjColumn column in _obj.DbObjColumns){#>
+            sql += $"'{this.<#=column.ObjColumnName #>}',";
+<#+} #>
+            sql = sql.Substring(0, sql.Length - 1);
+            sql+=");";
+            return sql;
+        }
+
 	}
 }
 <#+
