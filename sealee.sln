@@ -17,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Entity", "My.Entity\My.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sealee.SqlHelper", "Sealee.SqlHelper\Sealee.SqlHelper.csproj", "{C2BB7D6D-1E5F-4FC1-A4BB-B31F6BDCE6D6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EDD10CF9-8C52-4963-9971-9D719F321AF1}"
+	ProjectSection(SolutionItems) = preProject
+		_file\Sealee.T4Helper.dll = _file\Sealee.T4Helper.dll
+		_file\T4Helper.json = _file\T4Helper.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
