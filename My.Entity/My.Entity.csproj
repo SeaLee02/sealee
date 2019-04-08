@@ -144,7 +144,6 @@
 .\_ScalarFunctionDemo.cs
 </LastOutputs>
     </Content>
-    <Content Include="DLL\Sealee.T4Helper.dll" />
     <None Include="Framework\T4\ViewTemplate.t4" />
     <None Include="Framework\T4\EntityTemplate.t4" />
     <None Include="Framework\T4\Procedure.t4" />
