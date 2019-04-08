@@ -263,9 +263,6 @@ namespace Sealee.Util
                         }
                         object value = Convert.ChangeType(item[pro.Name], type);
                         pro.SetValue(d, value, null);
-
-                        ////类型转化
-                        //pro.SetValue(d, Convert.ChangeType(item[pro.Name], pro.PropertyType), null);//进行数据映射
                     }
                 }
                 result.Add(d);
