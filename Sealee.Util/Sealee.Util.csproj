@@ -72,6 +72,7 @@
     <Compile Include="WGS84Helper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="log4net.config" />
     <None Include="obj\Release\Sealee.Util.csproj.CoreCompileInputs.cache" />
     <None Include="packages.config" />
   </ItemGroup>
