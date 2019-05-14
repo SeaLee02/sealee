@@ -50,7 +50,7 @@
                                         ON obj.schema_id = schem.schema_id
                                     LEFT JOIN sys.extended_properties b  --描述
                                         ON obj.object_id = b.major_id
-                                           AND b.minor_id = 0
+                                           AND b.minor_id = 0  AND b.name='MS_Description'
                                     OUTER APPLY  --主键名称和类型
                                 (
                                     SELECT TOP 1
@@ -158,7 +158,7 @@
                                        AND systype.user_type_id = colm.user_type_id   --通过两个关联进行过滤得到用户创建的类型
                                 LEFT JOIN sys.extended_properties sep   
                                     ON sep.major_id = colm.object_id  --得到是这个表的
-                                       AND colm.column_id = sep.minor_id   --这列的
+                                       AND colm.column_id = sep.minor_id   AND sep.name='MS_Description'  --这列的
                                 LEFT JOIN indexCTE
                                     ON indexCTE.column_id = colm.column_id
                                        AND indexCTE.object_id = colm.object_id 
@@ -184,7 +184,7 @@
                 };
                 string enumStr = GetEnumStr(column.ColumnDesc, column.ColumnName, table);
                 if (!string.IsNullOrEmpty(enumStr))
-                {                                 
+                {
                     column.ColumnType = enumStr;
                 }
                 list.Add(column);
@@ -246,7 +246,7 @@
                                        AND systype.user_type_id = colm.user_type_id   --通过两个关联进行过滤得到用户创建的类型
                                 LEFT JOIN sys.extended_properties sep   
                                     ON sep.major_id = colm.object_id  --得到是这个表的
-                                       AND colm.column_id = sep.minor_id   --这列的
+                                       AND colm.column_id = sep.minor_id  AND sep.name='MS_Description'   --这列的
                                 LEFT JOIN indexCTE
                                     ON indexCTE.column_id = colm.column_id
                                        AND indexCTE.object_id = colm.object_id 
@@ -269,7 +269,7 @@
                     Scale = row.Field<int>("Scale"),
                     ColumnDesc = row.Field<string>("ColumnDesc") ?? "",
                     TableName = tableName
-                };              
+                };
                 list.Add(column);
 
             }
@@ -372,7 +372,7 @@
                             FROM sys.objects obj
                                 LEFT JOIN[sys].[extended_properties] se
                                    ON obj.object_id = se.major_id
-                                      AND se.minor_id = 0
+                                      AND se.minor_id = 0 AND se.name='MS_Description'
                             WHERE obj.type = 'V'  {viewName} ";
 
             DataTable dataTable = GetDataTable(connectionString, sql);
@@ -404,7 +404,7 @@
                             FROM sys.objects obj
                                 LEFT JOIN[sys].[extended_properties] se
                                    ON obj.object_id = se.major_id
-                                      AND se.minor_id = 0
+                                      AND se.minor_id = 0  AND se.name='MS_Description'
                             WHERE obj.type ='{xtype}'  {objName} ";
 
             DataTable dataTable = GetDataTable(connectionString, sql);
@@ -413,7 +413,7 @@
                 ObjName = row.Field<string>("ViewName"),
                 ObjDesc = row.Field<string>("ViewDesc") ?? "",
                 DbObjColumns = GetDbObjColumns(connectionString, row.Field<string>("ViewName")),
-                DbColumns=GetDbColumns(connectionString,row.Field<string>("ViewName"))
+                DbColumns = GetDbColumns(connectionString, row.Field<string>("ViewName"))
             }).ToList();
             return list;
         }
@@ -458,7 +458,7 @@
                                AND systype.user_type_id = sp.user_type_id
                         LEFT JOIN sys.extended_properties sep
                             ON sep.major_id = sp.object_id --得到是这个表的
-                               AND sp.parameter_id = sep.minor_id --这列的
+                               AND sp.parameter_id = sep.minor_id   AND sep.name='MS_Description' --这列的
                     WHERE sp.parameter_id != 0 AND obj.name='{objName}'
                 ";
             DataTable dataTable = GetDataTable(connectionString, sql);

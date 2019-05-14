@@ -37,7 +37,12 @@
         /// <summary>
         /// 主键类型
         /// </summary>
-        public string TablePrimarkeyType { get; set; }      
+        public string TablePrimarkeyType { get; set; }
+
+        /// <summary>
+        /// c#类型
+        /// </summary>
+        public string CShareType => SqlServerDbTypeMap.MapCsharpType(TablePrimarkeyType);
 
         public List<DbColumn> DbColumns { get; set; }
 
