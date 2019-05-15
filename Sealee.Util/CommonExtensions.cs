@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.International.Converters.PinYinConverter;  //nuget
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.International.Converters.PinYinConverter;  //nuget
 
 namespace Sealee.Util
 {
@@ -67,13 +68,16 @@ namespace Sealee.Util
         /// <returns></returns>
         public static int ToInt(this string str, int defaultValue = int.MinValue)
         {
-            int result;
-            if (!int.TryParse(str, out result))
+            if (!int.TryParse(str, out int result))
             {
                 if (defaultValue != int.MinValue)
+                {
                     result = defaultValue;
+                }
                 else
+                {
                     throw new Exception(str + "无法转换成整数类型！");
+                }
             }
             return result;
         }
@@ -84,13 +88,16 @@ namespace Sealee.Util
         /// <returns></returns>
         public static decimal ToDecimal(this string str, decimal defaultValue = decimal.MinValue)
         {
-            decimal result;
-            if (!decimal.TryParse(str, out result))
+            if (!decimal.TryParse(str, out decimal result))
             {
                 if (defaultValue != decimal.MinValue)
+                {
                     result = defaultValue;
+                }
                 else
+                {
                     throw new Exception(str + "无法转换成数值类型！");
+                }
             }
             return result;
         }
@@ -101,13 +108,16 @@ namespace Sealee.Util
         /// <returns></returns>
         public static float ToFloat(this string str, float defaultValue = float.MinValue)
         {
-            float result;
-            if (!float.TryParse(str, out result))
+            if (!float.TryParse(str, out float result))
             {
                 if (defaultValue != float.MinValue)
+                {
                     result = defaultValue;
+                }
                 else
+                {
                     throw new Exception(str + "无法转换成数值类型！");
+                }
             }
             return result;
         }
@@ -118,13 +128,16 @@ namespace Sealee.Util
         /// <returns></returns>
         public static double ToDouble(this string str, double defaultValue = double.MinValue)
         {
-            double result;
-            if (!double.TryParse(str, out result))
+            if (!double.TryParse(str, out double result))
             {
                 if (defaultValue != double.MinValue)
+                {
                     result = defaultValue;
+                }
                 else
+                {
                     throw new Exception(str + "无法转换成数值类型！");
+                }
             }
             return result;
         }
@@ -135,13 +148,16 @@ namespace Sealee.Util
         /// <returns></returns>
         public static DateTime ToDateTime(this string str, string defaultValue = "")
         {
-            DateTime result;
-            if (!DateTime.TryParse(str, out result))
+            if (!DateTime.TryParse(str, out DateTime result))
             {
                 if (defaultValue != "")
+                {
                     DateTime.TryParse(defaultValue, out result);
+                }
                 else
+                {
                     throw new Exception(str + "不是有效的时间格式");
+                }
             }
             return result;
         }
@@ -155,10 +171,10 @@ namespace Sealee.Util
         /// <returns>描述字符串</returns>
         public static string EnumGetDescription(this Enum value)
         {
-            var fi = value.GetType().GetField(value.ToString());
+            FieldInfo fi = value.GetType().GetField(value.ToString());
             if (fi != null)
             {
-                var attributes =
+                DescriptionAttribute[] attributes =
                     (DescriptionAttribute[])fi.GetCustomAttributes(
                         typeof(DescriptionAttribute), false); //获取描述的集合
                 return attributes.Length > 0 ? attributes[0].Description : value.ToString(); //存在取第一个,不存在返回Name
@@ -174,10 +190,10 @@ namespace Sealee.Util
         /// <returns></returns>
         public static string EnumGetDescription<T>(this string enumName)
         {
-            var fi = typeof(T).GetField(enumName);
+            FieldInfo fi = typeof(T).GetField(enumName);
             if (fi != null)
             {
-                var attributes =
+                DescriptionAttribute[] attributes =
                     (DescriptionAttribute[])fi.GetCustomAttributes(
                         typeof(DescriptionAttribute), false);
                 return attributes.Length > 0 ? attributes[0].Description : enumName;
@@ -203,7 +219,7 @@ namespace Sealee.Util
                 .ToList();
         }
         #endregion
-                           
+
         /// <summary>
         /// 字符串处理  (_切分，首字母大写 （.)去除  )
         /// </summary>
@@ -359,6 +375,23 @@ namespace Sealee.Util
         }
         #endregion
 
+        /// <summary>
+        /// 替换 Table列明
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="pairs"></param>
+        /// <returns></returns>
+        public static DataTable ReplaceColumnName(this DataTable dt, Dictionary<string, string> pairs)
+        {
+            if (pairs != null)
+            {
+                foreach (DataColumn item in dt.Columns)
+                {
+                    item.ColumnName = pairs[pairs.Keys.FirstOrDefault(x => x == item.ColumnName)];
+                }
+            }
+            return dt;
+        }
 
 
         #region 映射获取描述

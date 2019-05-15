@@ -41,3 +41,23 @@ Log.WriteLog(this.GetType().ToString(), "GetStaffCountByShift", errorMember.Erro
 }
 ----------------------------------------------------------------------
 
+---------------------------------------
+ReplaceColumnName:使用
+
+   Dictionary<string, string> dicColMapper = new Dictionary<string, string>();
+            string ColName = "学校名称,Ip地址";
+            string FieldName = "SchoolName,Ip";
+            List<string> colNames = ColName.Split(',').ToList();
+            List<string> fieldNames = FieldName.Split(',').ToList();
+            for (int i = 0; i < colNames.Count; i++)
+            {
+                dicColMapper.Add(colNames[i], fieldNames[i]);
+            }
+            string debugPath = AppDomain.CurrentDomain.BaseDirectory;
+            string projectPath = debugPath.GetSlnPath(3);
+            string filePath = Path.Combine(projectPath, "ip.xlsx");
+            FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            DataTable dt = NopiHelper.ExcelToTable(fileStream, 0, 0, ".xlsx");
+            dt.ReplaceColumnName(dicColMapper);//替换列名
+            List<Import> import = NopiHelper.Mapper<Import>(dt);
+-------------------------------------------
