@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="CommonExtensions.cs" />
     <Compile Include="DbHelper.cs" />
+    <Compile Include="DESEncrypt\DESEncrypt.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="NopiHelper.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
