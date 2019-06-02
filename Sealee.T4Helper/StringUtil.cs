@@ -54,7 +54,7 @@ namespace Sealee.T4Helper
                 string newstr = item.Replace("(", "").Replace(".", "").Replace(")", "");
                 string firstLetter = newstr.Substring(0, 1);
                 string rest = newstr.Substring(1, newstr.Length - 1);
-                str += firstLetter.ToUpper() + rest.ToLower();
+                str += firstLetter.ToUpper() + rest;
             }
             return str;
         }
