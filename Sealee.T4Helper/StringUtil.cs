@@ -37,7 +37,7 @@ namespace Sealee.T4Helper
         }
 
         /// <summary>
-        /// 转小写
+        /// 首字母转大写
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -55,6 +55,30 @@ namespace Sealee.T4Helper
                 string firstLetter = newstr.Substring(0, 1);
                 string rest = newstr.Substring(1, newstr.Length - 1);
                 str += firstLetter.ToUpper() + rest;
+            }
+            return str;
+        }
+
+
+        /// <summary>
+        /// 首字母转小写
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToLower(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+            string[] arry = value.Split('_');
+            string str = "";
+            foreach (string item in arry)
+            {
+                string newstr = item.Replace("(", "").Replace(".", "").Replace(")", "");
+                string firstLetter = newstr.Substring(0, 1);
+                string rest = newstr.Substring(1, newstr.Length - 1);
+                str += firstLetter.ToLower() + rest;
             }
             return str;
         }
