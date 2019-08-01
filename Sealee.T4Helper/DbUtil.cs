@@ -270,6 +270,11 @@
                     ColumnDesc = row.Field<string>("ColumnDesc") ?? "",
                     TableName = tableName
                 };
+                string regex = @"\(([^)]*)\)";
+                if (Regex.IsMatch(column.ColumnDesc, regex))
+                {
+                    column.ColumnType = column.ColumnName + "Enum";
+                }
                 list.Add(column);
 
             }
@@ -285,7 +290,7 @@
         /// <returns></returns>
         private static string GetEnumStr(string columnDesc, string colName, DbTable table)
         {
-            string regex = @"(?<=枚举).*";
+            string regex = @"\(([^)]*)\)";
             if (Regex.IsMatch(columnDesc, regex))
             {
                 //枚举定义规则: xxxm枚举(value.key[Des];) 

@@ -8,6 +8,9 @@ namespace Sealee.T4Helper
 {
     public class MyConfig
     {
+
+
+
         /// <summary>
         /// 连接字符串
         /// </summary>
@@ -21,7 +24,7 @@ namespace Sealee.T4Helper
         /// <summary>
         /// 命名空间
         /// </summary>
-        public string NameSpace { get; set; }          
+        public string NameSpace { get; set; }
 
         /// <summary>
         /// 是否覆盖文件
@@ -31,6 +34,12 @@ namespace Sealee.T4Helper
         /// <summary>
         /// 版本
         /// </summary>
-        public string Version { get; set; }     
+        public string Version { get; set; }
+    }
+
+    public enum DbType
+    {
+        SqlServer,
+        MySQL
     }
 }

@@ -5,14 +5,17 @@
     {
         public static string MapCsharpType(string dbtype)
         {
-            if (string.IsNullOrEmpty(dbtype)) return dbtype;
+            if (string.IsNullOrEmpty(dbtype))
+            {
+                return dbtype;
+            }
             //如果是枚举
             if (dbtype.Contains("Enum"))
             {
                 return dbtype;
             }
             dbtype = dbtype.ToLower();
-            string csharpType = "object";       
+            string csharpType = "object";
             switch (dbtype)
             {
                 case "bigint": csharpType = "long"; break;
@@ -54,7 +57,15 @@
 
         public static Type MapCommonType(string dbtype)
         {
-            if (string.IsNullOrEmpty(dbtype)) return Type.Missing.GetType();
+            if (string.IsNullOrEmpty(dbtype))
+            {
+                return Type.Missing.GetType();
+            }
+            //如果是枚举
+            if (dbtype.Contains("Enum"))
+            {
+                return typeof(int);
+            }
             dbtype = dbtype.ToLower();
             Type commonType = typeof(object);
             switch (dbtype)
@@ -76,7 +87,7 @@
                 case "ntext": commonType = typeof(string); break;
                 case "numeric": commonType = typeof(decimal); break;
                 case "nvarchar": commonType = typeof(string); break;
-                case "real": commonType = typeof(Single); break;
+                case "real": commonType = typeof(float); break;
                 case "smalldatetime": commonType = typeof(DateTime); break;
                 case "smallint": commonType = typeof(short); break;
                 case "smallmoney": commonType = typeof(decimal); break;
